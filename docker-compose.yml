@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    container_name: test-postgres-container
+    environment:
+      POSTGRES_DB: testDB
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+  redis:
+    image: redis
+    container_name: test-redis-container
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+
+  springboot:
+    image: test-web-flux
+    container_name: test-webflux-app
+    ports:
+      - "988:8080"
+    environment:
+      SPRING_REDIS_HOST: test-redis-container
+      SPRING_REDIS_PORT: 6379
+    networks:
+      - my-network
+    volumes:
+      - /Users/cfh00886283/Documents/TEST/MT/logs:/logs
+
+networks:
+  my-network:
+    driver: bridge

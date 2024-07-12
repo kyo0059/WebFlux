@@ -1,2 +1,18 @@
-package com.cathay.holdings.myr.config;public class SwaggerConfig {
+package com.cathay.holdings.myr.config;
+
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.Components;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import io.swagger.v3.oas.models.OpenAPI;
+
+@Configuration
+public class SwaggerConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .components(new Components())
+                .info(new Info().title("FirstTry API").description("API documentation for FirstTry application"));
+    }
 }

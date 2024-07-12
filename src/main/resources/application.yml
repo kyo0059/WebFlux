@@ -1,0 +1,66 @@
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+  r2dbc:
+    url: r2dbc:postgresql://test-postgres-container:5432/testDB
+    username: admin
+    password: admin
+    pool:
+      enabled: true
+      max-size: 20
+      initial-size: 10
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://test-postgres-container:5432/testDB
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  redis:
+    host: test-redis-container
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        time-between-eviction-runs: 60000
+
+logging:
+  file:
+    name: /logs/mt.log
+  level:
+    root: INFO
+    com.cathay.holdings.myr: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.netflix.discovery.shared.resolver.aws.ConfigClusterResolver: WARN
+    org.springframework.cloud.config.client.ConfigServicePropertySourceLocator: WARN
+    com.ch.myr.commons.cache.RedisExecutionAdvice: ERROR
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [${spring.application.name},%X{traceId:-},%X{spanId:-}] ${PID:- } --- [%thread] %logger : [%M] %msg%n"
+    console: ${logging.pattern.file}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
